@@ -23,10 +23,10 @@ public class DataPoller {
 				logger.info("Received protobuf packet");
 				
 				final InputStream inputStream = rawResponse.getContent();
-				logger.info("Parsed to {}", InputStream.class);
+				logger.debug("Parsed to {}", InputStream.class);
 				
 				final FeedMessage feed = FeedMessage.parseFrom(inputStream);
-				logger.info("Parsed to {}", FeedMessage.class);
+				logger.debug("Parsed to {}", FeedMessage.class);
 				
 				logger.info("Total entities received: {}", feed.getEntityCount());
 				future.complete(feed);
