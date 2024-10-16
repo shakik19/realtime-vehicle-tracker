@@ -2,18 +2,14 @@ spring:
   application:
     name: realtime-vehicle-tracking
   kafka:
-    bootstrap-servers: "127.0.0.1:9092"
+    bootstrap-servers: "localhost:19092"
     producer:
       key-serializer: "org.apache.kafka.common.serialization.StringSerializer"
       value-serializer: "io.confluent.kafka.serializers.KafkaAvroSerializer"
       properties:
         schema:
           registry:
-            url: "http://127.0.0.1:9092"
-avro:
+            url: "http://localhost:8081"
+kafka:
   topic:
-    name: "spring.boot.vehicle.position.avro.topic.v1"
-
-#logging:
-#  level:
-#    root: debug
+    name: "spring.boot.vehicle.position.kafka.topic.v1"

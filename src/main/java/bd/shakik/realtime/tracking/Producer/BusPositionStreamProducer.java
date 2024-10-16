@@ -18,7 +18,7 @@ public class BusPositionStreamProducer {
 	@Autowired
 	private KafkaTemplate<String, BusPosition> kafkaTemplate;
 	
-	@Value("${avro.topic.name}")
+	@Value("${kafka.topic.name}")
 	private String topicName;
 	
 	public void send(BusPosition position){
@@ -33,5 +33,9 @@ public class BusPositionStreamProducer {
 			logger.error("Error sending message {}", exception.getMessage());
 			return null;
 		});
+	}
+	
+	public String getTopicName() {
+		return topicName;
 	}
 }
