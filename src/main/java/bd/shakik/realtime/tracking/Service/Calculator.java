@@ -1,9 +1,9 @@
 package bd.shakik.realtime.tracking.Service;
 
-public class DistanceCalculator {
-	final int R = 6371; // Radius of the earth in kilometers
+public class Calculator {
+	final static int R = 6371; // Radius of the earth in kilometers
 	
-	public Double calculateDistance(Double prevLat, Double prevLon, Double currLat, Double currLon) {
+	public static Double calculateDistance(Double prevLat, Double prevLon, Double currLat, Double currLon) {
 		Double latDistance = toRad(currLat - prevLat);
 		Double lonDistance = toRad(currLon - prevLon);
 		Double a = Math.sin(latDistance / 2) * Math.sin(latDistance / 2) +
@@ -19,4 +19,12 @@ public class DistanceCalculator {
 		return value * Math.PI / 180;
 	}
 	
+	public static double calculateKmPerHour(double meters, long seconds) {
+		if (seconds == 0) {
+			return 0;
+		} else {
+			double metersPerSecond = meters / seconds;
+			return metersPerSecond * 3.6;
+		}
+	}
 }
