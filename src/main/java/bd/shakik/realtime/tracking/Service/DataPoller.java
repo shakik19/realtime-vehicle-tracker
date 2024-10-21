@@ -20,7 +20,7 @@ public class DataPoller {
 		logger.info("Requesting GTFS-RT protobuf from {}", url);
 		Unirest.get(url).thenConsume(rawResponse -> {
 			try {
-				logger.info("Received protobuf packet");
+				logger.info("Received the protobuf packet");
 				
 				final InputStream inputStream = rawResponse.getContent();
 				logger.debug("Parsed to {}", InputStream.class);
@@ -28,10 +28,10 @@ public class DataPoller {
 				final FeedMessage feed = FeedMessage.parseFrom(inputStream);
 				logger.debug("Parsed to {}", FeedMessage.class);
 				
-				logger.info("Total entities received: {}", feed.getEntityCount());
+				logger.info("Total entities: {}", feed.getEntityCount());
 				future.complete(feed);
 			} catch (Exception e) {
-				logger.error("Error fetching or processing feed: {}", e.getMessage());
+				logger.error("Error fetching or Parsing the Protobuf into {}: {}", FeedMessage.class, e.getMessage());
 				future.completeExceptionally(e);
 			}
 		});

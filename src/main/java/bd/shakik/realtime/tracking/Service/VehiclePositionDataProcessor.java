@@ -16,7 +16,6 @@ public class VehiclePositionDataProcessor {
 	Logger logger = LoggerFactory.getLogger(VehiclePositionDataProcessor.class);
 	
 	private static final HashMap<String, VehicleLocationState> locationStateStore = new HashMap<>();
-	private final DistanceCalculator distanceCalculator = new DistanceCalculator();
 	
 	public BusPosition getBusPosition(FeedEntity entity) {
 		if (!entity.hasVehicle()) {
@@ -26,11 +25,12 @@ public class VehiclePositionDataProcessor {
 			logger.debug("{} Exists in FeedEntity", VehicleDescriptor.class);
 		}
 		GtfsVehiclePosition gtfsVehiclePosition = new GtfsVehiclePosition(entity.getVehicle());
-		logger.info("Parsed FeedEntity id: {} to class GtfsVehiclePosition",gtfsVehiclePosition.getVehicleId());
+		logger.debug("Parsed FeedEntity id: {} to {}",gtfsVehiclePosition.getVehicleId(), GtfsVehiclePosition.class);
 		logger.debug("GtfVehiclePosition Object: {}", gtfsVehiclePosition);
+		
 		Location busLocation = new Location(gtfsVehiclePosition.getLongitude(), gtfsVehiclePosition.getLatitude());
 		
-		logger.debug("Building BusPosition object for id: {}", gtfsVehiclePosition.getVehicleId());
+		logger.debug("Building BusPosition object of vehicle id: {}", gtfsVehiclePosition.getVehicleId());
 		return new BusPosition(
 						gtfsVehiclePosition.getVehicleId(),
 						gtfsVehiclePosition.getTimestamp(),
@@ -46,13 +46,13 @@ public class VehiclePositionDataProcessor {
 		
 		Location currLoc = new Location(currentPosition.getLongitude(), currentPosition.getLatitude());
 		VehicleLocationState currLocState = new VehicleLocationState(currLoc, currentPosition.getTimestamp());
-		logger.debug("Current Location State: {}", currLocState.toString());
+		logger.debug("Current Location State: {}", currLocState);
 		
-		//? Checking if the current vehicle has an entry
+		//! Checking if the current vehicle has an entry
 		if (locationStateStore.containsKey(vehicleId)) {
 			logger.debug("Previous Location State: {}", locationStateStore.get(vehicleId));
 			Location prevLoc = locationStateStore.get(vehicleId).location();
-			double distanceKm = distanceCalculator.calculateDistance(
+			double distanceKm = Calculator.calculateDistance(
 							prevLoc.getLat(),
 							prevLoc.getLon(),
 							currLoc.getLat(),
@@ -62,21 +62,12 @@ public class VehiclePositionDataProcessor {
 			
 			locationStateStore.put(vehicleId, currLocState);
 			
-			return calculateKmPerHour(distanceKm * 1000, timeDelta);
+			return Calculator.calculateKmPerHour(distanceKm * 1000, timeDelta);
 		} else {
-			logger.info("Doesn't exists in the State Store Vehicle Id: {}", vehicleId);
+			logger.info("Vehicle Id: {} | Doesn't exists in the State Store", vehicleId);
 			locationStateStore.put(vehicleId, currLocState);
 			logger.debug("Putted in the State Store: {}", locationStateStore.get(vehicleId));
 			return 0d;
-		}
-	}
-	
-	private static double calculateKmPerHour(double meters, long seconds) {
-		if (seconds == 0) {
-			return 0;
-		} else {
-			double metersPerSecond = meters / seconds;
-			return metersPerSecond * 3.6;
 		}
 	}
 }

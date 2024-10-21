@@ -28,9 +28,9 @@ public class BusPositionStreamProducer {
 						position
 		);
 		future.thenAccept(sendResult -> {
-			logger.info("Message produced successfully {}", sendResult);
+			logger.info("Message produced successfully | {}", sendResult);
 		}).exceptionally(exception -> {
-			logger.error("Error sending message {}", exception.getMessage());
+			logger.error("Error producing message | {}", exception.getMessage());
 			return null;
 		});
 	}

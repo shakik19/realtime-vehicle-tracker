@@ -22,6 +22,7 @@ public final class PipelineController {
 	private final DataPoller dataPoller;
 	private final VehiclePositionDataProcessor dataProcessor;
 	private final BusPositionStreamProducer busPositionStreamProducer;
+	private int count = 1;
 	
 	public PipelineController(
 					DataPoller dataPoller,
@@ -32,20 +33,18 @@ public final class PipelineController {
 		this.busPositionStreamProducer = busPositionStreamProducer;
 	}
 	
-	private int count = 1;
-	
-	@Scheduled(cron = "*/20 * * * * *")
+	@Scheduled(cron = "*/120 * * * * *")
 	private void produceBusPositionStream() {
 		try {
 			FeedMessage feed = dataPoller.getBusFeed();
 			for (FeedEntity entity : feed.getEntityList()) {
 				BusPosition busPosition = dataProcessor.getBusPosition(entity);
 				if (busPosition != null) {
-					logger.info("{}. Vehicle: {}", count++, busPosition.toString());
 					busPositionStreamProducer.send(busPosition);
-					logger.info("kafka topic: {} -> Added new message: {}",
+					logger.info("{}. Kafka Topic: {} | Added a new message Key: {}",
+									count++,
 									busPositionStreamProducer.getTopicName(),
-									busPosition.toString());
+									busPosition.getId());
 				}
 			}
 		} catch (ExecutionException | InterruptedException e) {
