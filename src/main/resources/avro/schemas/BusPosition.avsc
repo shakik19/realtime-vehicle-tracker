@@ -4,7 +4,13 @@
   "name": "BusPosition",
   "fields": [
     {"name": "id", "type": "string"},
-    {"name": "timestamp", "type": "long"},
+    {
+      "name": "timestamp",
+      "type": {
+        "type": "long",
+        "logicalType": "timestamp-millis"
+      }
+    },
     {
       "name": "location",
       "type": {

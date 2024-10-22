@@ -16,10 +16,13 @@ public class BusPosition extends org.apache.avro.specific.SpecificRecordBase imp
   private static final long serialVersionUID = -7806929310328913833L;
 
 
-  public static final org.apache.avro.Schema SCHEMA$ = new org.apache.avro.Schema.Parser().parse("{\"type\":\"record\",\"name\":\"BusPosition\",\"namespace\":\"bd.shakik.avro.schemas\",\"fields\":[{\"name\":\"id\",\"type\":\"string\"},{\"name\":\"timestamp\",\"type\":\"long\"},{\"name\":\"location\",\"type\":{\"type\":\"record\",\"name\":\"Location\",\"fields\":[{\"name\":\"lon\",\"type\":\"double\"},{\"name\":\"lat\",\"type\":\"double\"}]}},{\"name\":\"bearing\",\"type\":\"double\"},{\"name\":\"kmPerHour\",\"type\":\"double\"}]}");
+  public static final org.apache.avro.Schema SCHEMA$ = new org.apache.avro.Schema.Parser().parse("{\"type\":\"record\",\"name\":\"BusPosition\",\"namespace\":\"bd.shakik.avro.schemas\",\"fields\":[{\"name\":\"id\",\"type\":\"string\"},{\"name\":\"timestamp\",\"type\":{\"type\":\"long\",\"logicalType\":\"timestamp-millis\"}},{\"name\":\"location\",\"type\":{\"type\":\"record\",\"name\":\"Location\",\"fields\":[{\"name\":\"lon\",\"type\":\"double\"},{\"name\":\"lat\",\"type\":\"double\"}]}},{\"name\":\"bearing\",\"type\":\"double\"},{\"name\":\"kmPerHour\",\"type\":\"double\"}]}");
   public static org.apache.avro.Schema getClassSchema() { return SCHEMA$; }
 
   private static final SpecificData MODEL$ = new SpecificData();
+  static {
+    MODEL$.addLogicalTypeConversion(new org.apache.avro.data.TimeConversions.TimestampMillisConversion());
+  }
 
   private static final BinaryMessageEncoder<BusPosition> ENCODER =
       new BinaryMessageEncoder<>(MODEL$, SCHEMA$);
@@ -73,7 +76,7 @@ public class BusPosition extends org.apache.avro.specific.SpecificRecordBase imp
   }
 
   private java.lang.CharSequence id;
-  private long timestamp;
+  private java.time.Instant timestamp;
   private bd.shakik.avro.schemas.Location location;
   private double bearing;
   private double kmPerHour;
@@ -93,9 +96,9 @@ public class BusPosition extends org.apache.avro.specific.SpecificRecordBase imp
    * @param bearing The new value for bearing
    * @param kmPerHour The new value for kmPerHour
    */
-  public BusPosition(java.lang.CharSequence id, java.lang.Long timestamp, bd.shakik.avro.schemas.Location location, java.lang.Double bearing, java.lang.Double kmPerHour) {
+  public BusPosition(java.lang.CharSequence id, java.time.Instant timestamp, bd.shakik.avro.schemas.Location location, java.lang.Double bearing, java.lang.Double kmPerHour) {
     this.id = id;
-    this.timestamp = timestamp;
+    this.timestamp = timestamp.truncatedTo(java.time.temporal.ChronoUnit.MILLIS);
     this.location = location;
     this.bearing = bearing;
     this.kmPerHour = kmPerHour;
@@ -120,13 +123,28 @@ public class BusPosition extends org.apache.avro.specific.SpecificRecordBase imp
     }
   }
 
+  private static final org.apache.avro.Conversion<?>[] conversions =
+      new org.apache.avro.Conversion<?>[] {
+      null,
+      new org.apache.avro.data.TimeConversions.TimestampMillisConversion(),
+      null,
+      null,
+      null,
+      null
+  };
+
+  @Override
+  public org.apache.avro.Conversion<?> getConversion(int field) {
+    return conversions[field];
+  }
+
   // Used by DatumReader.  Applications should not call.
   @Override
   @SuppressWarnings(value="unchecked")
   public void put(int field$, java.lang.Object value$) {
     switch (field$) {
     case 0: id = (java.lang.CharSequence)value$; break;
-    case 1: timestamp = (java.lang.Long)value$; break;
+    case 1: timestamp = (java.time.Instant)value$; break;
     case 2: location = (bd.shakik.avro.schemas.Location)value$; break;
     case 3: bearing = (java.lang.Double)value$; break;
     case 4: kmPerHour = (java.lang.Double)value$; break;
@@ -155,7 +173,7 @@ public class BusPosition extends org.apache.avro.specific.SpecificRecordBase imp
    * Gets the value of the 'timestamp' field.
    * @return The value of the 'timestamp' field.
    */
-  public long getTimestamp() {
+  public java.time.Instant getTimestamp() {
     return timestamp;
   }
 
@@ -164,8 +182,8 @@ public class BusPosition extends org.apache.avro.specific.SpecificRecordBase imp
    * Sets the value of the 'timestamp' field.
    * @param value the value to set.
    */
-  public void setTimestamp(long value) {
-    this.timestamp = value;
+  public void setTimestamp(java.time.Instant value) {
+    this.timestamp = value.truncatedTo(java.time.temporal.ChronoUnit.MILLIS);
   }
 
   /**
@@ -261,7 +279,7 @@ public class BusPosition extends org.apache.avro.specific.SpecificRecordBase imp
     implements org.apache.avro.data.RecordBuilder<BusPosition> {
 
     private java.lang.CharSequence id;
-    private long timestamp;
+    private java.time.Instant timestamp;
     private bd.shakik.avro.schemas.Location location;
     private bd.shakik.avro.schemas.Location.Builder locationBuilder;
     private double bearing;
@@ -376,7 +394,7 @@ public class BusPosition extends org.apache.avro.specific.SpecificRecordBase imp
       * Gets the value of the 'timestamp' field.
       * @return The value.
       */
-    public long getTimestamp() {
+    public java.time.Instant getTimestamp() {
       return timestamp;
     }
 
@@ -386,9 +404,9 @@ public class BusPosition extends org.apache.avro.specific.SpecificRecordBase imp
       * @param value The value of 'timestamp'.
       * @return This builder.
       */
-    public bd.shakik.avro.schemas.BusPosition.Builder setTimestamp(long value) {
+    public bd.shakik.avro.schemas.BusPosition.Builder setTimestamp(java.time.Instant value) {
       validate(fields()[1], value);
-      this.timestamp = value;
+      this.timestamp = value.truncatedTo(java.time.temporal.ChronoUnit.MILLIS);
       fieldSetFlags()[1] = true;
       return this;
     }
@@ -571,7 +589,7 @@ public class BusPosition extends org.apache.avro.specific.SpecificRecordBase imp
       try {
         BusPosition record = new BusPosition();
         record.id = fieldSetFlags()[0] ? this.id : (java.lang.CharSequence) defaultValue(fields()[0]);
-        record.timestamp = fieldSetFlags()[1] ? this.timestamp : (java.lang.Long) defaultValue(fields()[1]);
+        record.timestamp = fieldSetFlags()[1] ? this.timestamp : (java.time.Instant) defaultValue(fields()[1]);
         if (locationBuilder != null) {
           try {
             record.location = this.locationBuilder.build();
@@ -611,73 +629,6 @@ public class BusPosition extends org.apache.avro.specific.SpecificRecordBase imp
     READER$.read(this, SpecificData.getDecoder(in));
   }
 
-  @Override protected boolean hasCustomCoders() { return true; }
-
-  @Override public void customEncode(org.apache.avro.io.Encoder out)
-    throws java.io.IOException
-  {
-    out.writeString(this.id);
-
-    out.writeLong(this.timestamp);
-
-    this.location.customEncode(out);
-
-    out.writeDouble(this.bearing);
-
-    out.writeDouble(this.kmPerHour);
-
-  }
-
-  @Override public void customDecode(org.apache.avro.io.ResolvingDecoder in)
-    throws java.io.IOException
-  {
-    org.apache.avro.Schema.Field[] fieldOrder = in.readFieldOrderIfDiff();
-    if (fieldOrder == null) {
-      this.id = in.readString(this.id instanceof Utf8 ? (Utf8)this.id : null);
-
-      this.timestamp = in.readLong();
-
-      if (this.location == null) {
-        this.location = new bd.shakik.avro.schemas.Location();
-      }
-      this.location.customDecode(in);
-
-      this.bearing = in.readDouble();
-
-      this.kmPerHour = in.readDouble();
-
-    } else {
-      for (int i = 0; i < 5; i++) {
-        switch (fieldOrder[i].pos()) {
-        case 0:
-          this.id = in.readString(this.id instanceof Utf8 ? (Utf8)this.id : null);
-          break;
-
-        case 1:
-          this.timestamp = in.readLong();
-          break;
-
-        case 2:
-          if (this.location == null) {
-            this.location = new bd.shakik.avro.schemas.Location();
-          }
-          this.location.customDecode(in);
-          break;
-
-        case 3:
-          this.bearing = in.readDouble();
-          break;
-
-        case 4:
-          this.kmPerHour = in.readDouble();
-          break;
-
-        default:
-          throw new java.io.IOException("Corrupt ResolvingDecoder.");
-        }
-      }
-    }
-  }
 }
 
 

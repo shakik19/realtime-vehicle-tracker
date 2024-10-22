@@ -9,6 +9,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
+import java.time.Instant;
 import java.util.HashMap;
 
 @Service
@@ -33,7 +34,7 @@ public class VehiclePositionDataProcessor {
 		logger.debug("Building BusPosition object of vehicle id: {}", gtfsVehiclePosition.getVehicleId());
 		return new BusPosition(
 						gtfsVehiclePosition.getVehicleId(),
-						gtfsVehiclePosition.getTimestamp(),
+						Instant.ofEpochSecond(gtfsVehiclePosition.getTimestamp()),
 						busLocation,
 						gtfsVehiclePosition.getBearing(),
 						getSpeed(gtfsVehiclePosition)
