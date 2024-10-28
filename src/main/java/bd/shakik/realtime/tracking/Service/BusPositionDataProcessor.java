@@ -13,8 +13,8 @@ import java.time.Instant;
 import java.util.HashMap;
 
 @Service
-public class VehiclePositionDataProcessor {
-	Logger logger = LoggerFactory.getLogger(VehiclePositionDataProcessor.class);
+public class BusPositionDataProcessor {
+	Logger logger = LoggerFactory.getLogger(BusPositionDataProcessor.class);
 	
 	private static final HashMap<String, VehicleLocationState> locationStateStore = new HashMap<>();
 	

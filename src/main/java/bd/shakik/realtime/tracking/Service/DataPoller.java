@@ -14,8 +14,7 @@ import java.util.concurrent.ExecutionException;
 public class DataPoller {
 	private static final Logger logger = LoggerFactory.getLogger(DataPoller.class);
 	
-	public FeedMessage getBusFeed() throws ExecutionException, InterruptedException {
-		final String url = "https://www.rtd-denver.com/files/gtfs-rt/VehiclePosition.pb";
+	public FeedMessage getBusFeed(String url) throws ExecutionException, InterruptedException {
 		CompletableFuture<FeedMessage> future = new CompletableFuture<>();
 		logger.info("Requesting GTFS-RT protobuf from {}", url);
 		Unirest.get(url).thenConsume(rawResponse -> {
