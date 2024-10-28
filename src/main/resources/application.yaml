@@ -11,5 +11,5 @@ spring:
           registry:
             url: "http://schema-registry:8081"
 kafka:
-  topic:
-    name: "spring.boot.vehicle.position.kafka.topic.v1"
+  topics:
+    bus-position: "spring.boot.vehicle.position.kafka.topic.v1"
