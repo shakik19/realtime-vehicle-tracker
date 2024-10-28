@@ -7,4 +7,4 @@ COPY ${JAR_FILE} application.jar
 
 CMD apt-get update -y
 
-ENTRYPOINT ["java", "-Xmx2048M", "-jar", "/application.jar"]
+ENTRYPOINT sleep 150 && java -Xmx2048M -jar /application.jar
