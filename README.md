@@ -1,5 +1,14 @@
-## Real-time Vehicle Tracker
-A simple real-time bus location tracking application using the RTD-Denver GTFS-RT data feed. In this app, the Spring-Boot service continuously polls the protobuf telemetry feed from RTD in two mins intervals. Then it writes the enriched entities to a Kafka topic in Avro format and uses kafka-connect to ingest the messages to a pre-configured Elasticsearch index. Finally, I have used Kibana to create a dashboard to monitor the vehicle activities. I structured the pipeline with extensibility in mind so that data from similar sources and formats can be easily integrated.   
+## Real-Time Vehicle Monitoring System — Intelligent Fleet Visualization & Insights
+
+This project is a real-time monitoring platform built to oversee a fleet of buses, offering live insights into vehicle status, location, and movement across a mapped interface. Unlike basic tracking systems, this service is built with monitoring, analytics, and operational intelligence in mind.
+
+The system ingests geospatial and telemetry data in real time, allowing transit operators to view fleet behavior holistically. While the current version focuses on live vehicle monitoring, the architecture is designed to support future enhancements including:
+
+- **Speed Anomaly Detection** – Identify when vehicles exceed or fall below expected speeds in certain zones or timeframes.
+- **Traffic Heatmaps** – Generate visual overlays to show congestion patterns, frequent stops, and route optimization opportunities.
+- **Data-Driven Alerts & Reports** – Use historical trends for automated maintenance alerts or efficiency analysis.
+
+Built with extensibility and data-driven decision-making in mind, this project lays the groundwork for intelligent fleet management tools that go beyond location tracking into predictive and prescriptive analytics.
 
 #### Architecture Diagram
 <div>
