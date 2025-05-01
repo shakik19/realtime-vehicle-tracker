@@ -1,12 +1,7 @@
 package bd.shakik.realtime.tracking.Controller;
 
-import bd.shakik.avro.schemas.BusPosition;
-import bd.shakik.realtime.tracking.Service.DataPoller;
-import bd.shakik.realtime.tracking.Service.MessageProducer;
-import bd.shakik.realtime.tracking.Service.BusPositionDataProcessor;
-import com.google.transit.realtime.GtfsRealtime.FeedMessage;
-import com.google.transit.realtime.GtfsRealtime.FeedEntity;
-import org.apache.kafka.common.protocol.types.Field;
+import java.util.concurrent.ExecutionException;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -14,7 +9,13 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
-import java.util.concurrent.ExecutionException;
+import com.google.transit.realtime.GtfsRealtime.FeedEntity;
+import com.google.transit.realtime.GtfsRealtime.FeedMessage;
+
+import bd.shakik.avro.schemas.BusPosition;
+import bd.shakik.realtime.tracking.Service.BusPositionDataProcessor;
+import bd.shakik.realtime.tracking.Service.DataPoller;
+import bd.shakik.realtime.tracking.Service.MessageProducer;
 
 @Service
 @EnableScheduling
@@ -37,7 +38,7 @@ public final class PipelineController {
 		this.busPositionMessageProducer = busPositionMessageProducer;
 	}
 	
-	@Scheduled(cron = "*/120 * * * * *")
+	@Scheduled(cron = "*/20 * * * * *")
 	private void streamBusPosition() {
 		final String url = "https://www.rtd-denver.com/files/gtfs-rt/VehiclePosition.pb";;
 		try {
